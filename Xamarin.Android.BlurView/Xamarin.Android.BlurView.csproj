@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0-android33.0</TargetFramework>
+		<SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<VersionPrefix>1.0.1</VersionPrefix>
+		<Version>$(VersionPrefix)</Version>
+		<Authors>Andrei Radishyn</Authors>
+		<PackageId>Xamarin.Android.BlurView</PackageId>
+		<PackageDescription>BlurView for Xamarin.Android</PackageDescription>
+		<RepositoryUrl>https://github.com/gogogo453/Xamarin.Android.BlurView</RepositoryUrl>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<PackageVersion>$(VersionPrefix)</PackageVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Resources\values\styles.xml" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Xamarin.AndroidX.Annotation" Version="1.5.0.1" />
+	</ItemGroup>
+</Project>
