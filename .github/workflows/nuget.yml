@@ -1,0 +1,50 @@
+name: NUGET
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Install workloads (currently required for hosted runners)
+      shell: pwsh
+      run: |
+        dotnet workload install android --ignore-failed-sources
+    
+    - name: Set VERSION variable from tag
+      run: | 
+        $VERREF='${{ github.ref_name }}'
+        $VERSION=$VERREF.Substring(1)
+        echo "action_version=$VERSION" >> $env:GITHUB_ENV
+        
+    - name: Restore NuGet Packages
+      run: dotnet restore Xamarin.Android.BlurView/Xamarin.Android.BlurView.csproj
+    
+    - name: Build
+      run: dotnet build Xamarin.Android.BlurView/Xamarin.Android.BlurView.csproj --configuration Release -p:Version="${{ env.action_version }}"
+    - name: Test
+      run: dotnet test Xamarin.Android.BlurView/Xamarin.Android.BlurView.csproj --configuration Release -p:Version="${{ env.action_version }}" --no-build
+    - name: Pack
+      run: dotnet pack Xamarin.Android.BlurView/Xamarin.Android.BlurView.csproj --configuration Release -p:Version="${{ env.action_version }}" --no-build --output .
+    - name: Push
+      run: | 
+        dotnet nuget push Xamarin.Android.BlurView.'${{ env.action_version }}'.nupkg --source https://nuget.pkg.github.com/gogogo453/index.json --api-key '${{ github.token }}' --skip-duplicate
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Push Nuget
+      run: | 
+        dotnet nuget push Xamarin.Android.BlurView.'${{ env.action_version }}'.nupkg --source https://api.nuget.org/v3/index.json --api-key '${{ secrets.NUGET_TOKEN }}'
+      env:
+        NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+        
