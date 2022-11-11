@@ -20,7 +20,7 @@ and size changes, including view animation and property animation.
 
    <!--Any child View here, TabLayout for example-->
 
-</Xamarin.Android.BlurView.BlurView
+</Xamarin.Android.BlurView.BlurView>
 ```
 
 ```csharp
@@ -36,8 +36,8 @@ ViewGroup rootView = decorView.FindViewById<ViewGroup>(Android.Resource.Id.conte
 Drawable windowBackground = Window.DecorView.Background;
 
 blurView.SetupWith(rootView, BlurAlgorithm)       
-       .SetFrameClearDrawable(windowBackground)
-       .SetBlurRadius(radius);
+        .SetFrameClearDrawable(windowBackground)
+        .SetBlurRadius(radius);
 ```
 
 Always try to choose the closest possible root layout to BlurView. This will greatly reduce the amount of work needed for creating View hierarchy snapshot.
